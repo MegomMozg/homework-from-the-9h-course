@@ -339,6 +339,7 @@
 -r:"D:/Shcool/homework-from-the-9h-course/homework-from-the-9h-course/Library/PackageCache/com.unity.visualscripting@1.7.8/Runtime/VisualScripting.Flow/Dependencies/NCalc/Unity.VisualScripting.Antlr3.Runtime.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Abstractions.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Model.ref.dll"
+-r:"Library/Bee/artifacts/1900b0aE.dag/Outline.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.TextMeshPro.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
@@ -348,6 +349,7 @@
 "Assets/Scripts/UserControlSystem/UI/Presenter/BottomLeftPresenter.cs"
 "Assets/Scripts/UserControlSystem/UI/Presenter/CommandButtonsPresenter.cs"
 "Assets/Scripts/UserControlSystem/UI/Presenter/MouseInteractionPresenter.cs"
+"Assets/Scripts/UserControlSystem/UI/Presenter/outlineInteractionPresenter.cs"
 -langversion:9.0
 
 /deterministic

@@ -347,6 +347,7 @@
 "Assets/Scripts/Abstractions/Commands/CommandsInterfaces/IStopCommand.cs"
 "Assets/Scripts/Abstractions/Commands/ICommand.cs"
 "Assets/Scripts/Abstractions/Commands/ICommandExecutor.cs"
+"Assets/Scripts/Abstractions/IOutlineSelection.cs"
 "Assets/Scripts/Abstractions/ISelectable.cs"
 "Assets/Scripts/Abstractions/IUnitProducer.cs"
 -langversion:9.0

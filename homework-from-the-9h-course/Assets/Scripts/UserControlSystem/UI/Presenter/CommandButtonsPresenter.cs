@@ -4,7 +4,6 @@ using Abstractions;
 using Abstractions.Commands;
 using Abstractions.Commands.CommandsInterfaces;
 using UnityEngine;
-using UserControlSystem.CommandsRealization;
 using UserControlSystem.UI.View;
 using Utils;
 
@@ -45,12 +44,17 @@ namespace UserControlSystem.UI.Presenter
 
         private void ONButtonClick(ICommandExecutor commandExecutor)
         {
-            var unitProducer = commandExecutor as CommandExecutorBase<IProduceUnitCommand>;
-            if (unitProducer != null)
+            if (commandExecutor is CommandExecutorBase<IProduceUnitCommand> unitProducer)
             {
-                unitProducer.ExecuteSpecificCommand(_context.Inject(new ProduceUnitCommand()));
+                unitProducer.ExecuteSpecificCommand(_context.Inject(new ProduceUnitCommandHeir()));
                 return;
             }
+            else if (commandExecutor != null)
+            {
+                commandExecutor.ExecuteCommand(null);
+                return;
+            }
+
             throw new ApplicationException($"{nameof(CommandButtonsPresenter)}.{nameof(ONButtonClick)}: " +
                                            $"Unknown type of commands executor: {commandExecutor.GetType().FullName}!");
         }
