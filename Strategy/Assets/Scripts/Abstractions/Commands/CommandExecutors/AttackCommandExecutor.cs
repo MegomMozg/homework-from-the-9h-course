@@ -7,7 +7,7 @@ namespace Abstractions.Commands.CommandExecutors
     {
         public override void ExecuteSpecificCommand(IAttackCommand command)
         {
-            Debug.Log($"{name} is attacking!");
+            Debug.Log($"{name} is attacking to {command.Target}!");
         }
     }
 }

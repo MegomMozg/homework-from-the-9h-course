@@ -7,7 +7,7 @@ namespace Abstractions.Commands.CommandExecutors
     {
         public override void ExecuteSpecificCommand(IPatrolCommand command)
         {
-            Debug.Log($"{name} patroling!");
+            Debug.Log($"{name} is patroling to {command.Target}!");
         }
     }
 }
