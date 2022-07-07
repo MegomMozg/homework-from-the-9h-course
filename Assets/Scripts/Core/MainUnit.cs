@@ -9,6 +9,7 @@ namespace Core
         public float MaxHealth => _maxHealth;
         public Transform PivotPoint => _pivotPoint;
         public Sprite Icon => _icon;
+        public Transform Transform => transform;
 
         [SerializeField] private float _maxHealth = 100;
         [SerializeField] private Sprite _icon;

@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Abstractions;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UserControlSystem;
+using UserControlSystem.UI.Presenter;
 
 public sealed class MouseInteractionPresenter : MonoBehaviour
 {
@@ -14,8 +16,16 @@ public sealed class MouseInteractionPresenter : MonoBehaviour
     [SerializeField] private AttackableValue _attackablesRMB;
     [SerializeField] private Transform _groundTransform;
     
+    private AutoCommand _autoCommand;
     private Plane _groundPlane;
-    
+    private CommandButtonsPresenter _commandButtonsPresenter;
+
+    private void Awake()
+    {
+        _commandButtonsPresenter = FindObjectOfType<CommandButtonsPresenter>();
+        _autoCommand = new AutoCommand();
+    }
+
     private void Start() => _groundPlane = new Plane(_groundTransform.up, 0);
 
     private void Update()
@@ -51,7 +61,15 @@ public sealed class MouseInteractionPresenter : MonoBehaviour
             }
             else if (_groundPlane.Raycast(ray, out var enter))
             {
-                _groundClicksRMB.SetValue(ray.origin + ray.direction * enter);
+                Vector3 newValue = ray.origin + ray.direction * enter;
+                if (_commandButtonsPresenter != null && _commandButtonsPresenter.CommandIsPending)
+                {
+                    _groundClicksRMB.SetValue(newValue);
+                }
+                else if (!_autoCommand.AutoMoveUnit(_selectedObject.CurrentValue, newValue))
+                {
+                    _groundClicksRMB.SetValue(newValue);
+                }
             }
         }
     }

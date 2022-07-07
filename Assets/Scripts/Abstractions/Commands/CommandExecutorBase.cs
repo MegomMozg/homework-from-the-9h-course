@@ -2,10 +2,23 @@
 
 namespace Abstractions.Commands
 {
-    public abstract class CommandExecutorBase<T> : MonoBehaviour, ICommandExecutor where T : ICommand
+    public abstract class CommandExecutorBase<T> : MonoBehaviour, ICommandExecutor, ICancelCommand where T : ICommand
     {
         public void ExecuteCommand(object command) => ExecuteSpecificCommand((T)command);
 
-        public abstract void ExecuteSpecificCommand(T command);
+        public virtual void ExecuteSpecificCommand(T command)
+        {
+            CancelAllCommand();
+        }
+
+        public virtual void CancelCommand(){}
+        private void CancelAllCommand()
+        {
+            ICancelCommand[] commands = GetComponentsInChildren<ICancelCommand>();
+            foreach (ICancelCommand command in commands)
+            {
+                command.CancelCommand();
+            }
+        }
     }
 }

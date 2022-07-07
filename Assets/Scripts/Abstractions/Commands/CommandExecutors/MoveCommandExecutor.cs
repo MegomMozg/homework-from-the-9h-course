@@ -14,6 +14,7 @@ namespace Abstractions.Commands.CommandExecutors
 
         public override async void ExecuteSpecificCommand(IMoveCommand command)
         {
+            base.ExecuteSpecificCommand(command);
             GetComponent<NavMeshAgent>().destination = command.Target;
             _animator.SetTrigger(Walk);
             await _stop;
