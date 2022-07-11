@@ -1,11 +1,14 @@
 ﻿using System.Linq;
 using Abstractions;
 using UnityEngine;
+using UniRx;
 using UnityEngine.EventSystems;
 using UserControlSystem;
 
 public sealed class MouseInteractionPresenter : MonoBehaviour
 {
+    #region Методы
+
     [SerializeField] private Camera _camera;
     [SerializeField] private SelectableValue _selectedObject;
     [SerializeField] private EventSystem _eventSystem;
@@ -13,25 +16,25 @@ public sealed class MouseInteractionPresenter : MonoBehaviour
     [SerializeField] private Vector3Value _groundClicksRMB;
     [SerializeField] private AttackableValue _attackablesRMB;
     [SerializeField] private Transform _groundTransform;
-    
-    private Plane _groundPlane;
-    
-    private void Start() => _groundPlane = new Plane(_groundTransform.up, 0);
 
-    private void Update()
+    private Plane _groundPlane;
+    #endregion
+    
+    private void Start()
     {
-        if (!Input.GetMouseButtonUp(0) && !Input.GetMouseButton(1))
-        {
-            return;
-        }
+        _groundPlane = new Plane(_groundTransform.up, 0);
         
-        if (_eventSystem.IsPointerOverGameObject())
-        {
-            return;
-        }
-        
+        var clickStream = Observable.EveryUpdate().Where(_ => (Input.GetMouseButtonUp(0) 
+                                                                      || Input.GetMouseButton(1))
+                                                                      && (!_eventSystem.IsPointerOverGameObject()));
+        clickStream.Subscribe(EveryUpdate);
+    }
+
+    private void EveryUpdate(long Framecount)
+    {
         var ray = _camera.ScreenPointToRay(Input.mousePosition);
         var hits = Physics.RaycastAll(ray);
+        
         if (Input.GetMouseButtonUp(0))
         {
             if (WeHit<ISelectable>(hits, out var selectable))

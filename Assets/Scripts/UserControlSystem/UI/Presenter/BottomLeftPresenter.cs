@@ -1,5 +1,6 @@
 ﻿using Abstractions;
 using TMPro;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +18,7 @@ namespace UserControlSystem
 
         private void Start()
         {
-            _selectedValue.OnNewValue += ONSelected;
+            _selectedValue.OnNewReactiveValue.Subscribe(selectable => ONSelected(selectable));
             ONSelected(_selectedValue.CurrentValue);
         }
         
