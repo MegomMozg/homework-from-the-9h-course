@@ -18,7 +18,7 @@ namespace UserControlSystem
         [Inject] private CommandCreatorBase<IStopCommand> _stopper;
         [Inject] private CommandCreatorBase<IMoveCommand> _mover;
         [Inject] private CommandCreatorBase<IPatrolCommand> _patroller;
-
+        [Inject] private CommandCreatorBase<ISetRallyPointCommand> _rally;
         private bool _commandIsPending;
 
         public void OnCommandButtonClicked(ICommandExecutor commandExecutor, ICommandsQueue commandsQueue)
@@ -35,6 +35,7 @@ namespace UserControlSystem
             _stopper.ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(command, commandsQueue));
             _mover.ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(command, commandsQueue));
             _patroller.ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(command, commandsQueue));
+            _rally.ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(command, commandsQueue));
         }
         public void executeCommandWrapper(object command, ICommandsQueue commandsQueue)
         {
@@ -61,6 +62,7 @@ namespace UserControlSystem
             _stopper.ProcessCancel();
             _mover.ProcessCancel();
             _patroller.ProcessCancel();
+            _rally.ProcessCancel();
 
             OnCommandCancel?.Invoke();
         }
