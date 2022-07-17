@@ -1,14 +1,14 @@
 ﻿using System;
 using Abstractions.Commands;
+using Core;
 
 namespace UserControlSystem
 {
-    public abstract class CommandCreatorBase<T> where T : ICommand
+    public abstract class CommandCreatorBase<T> where T : class, ICommand
     {
         public ICommandExecutor ProcessCommandExecutor(ICommandExecutor commandExecutor, Action<T> callback)
         {
-            var classSpecificExecutor = commandExecutor as CommandExecutorBase<T>;
-            if (classSpecificExecutor != null)
+            if (commandExecutor is ICommandExecutor<T> classSpeacificExecutor)
             {
                 ClassSpecificCommandCreation(callback);
             }

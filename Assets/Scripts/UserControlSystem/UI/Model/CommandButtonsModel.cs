@@ -1,4 +1,6 @@
 ﻿using System;
+using Abstractions;
+using UnityEngine;
 using Abstractions.Commands;
 using Abstractions.Commands.CommandsInterfaces;
 using Zenject;
@@ -19,7 +21,7 @@ namespace UserControlSystem
 
         private bool _commandIsPending;
 
-        public void OnCommandButtonClicked(ICommandExecutor commandExecutor)
+        public void OnCommandButtonClicked(ICommandExecutor commandExecutor, ICommandsQueue commandsQueue)
         {
             if (_commandIsPending)
             {
@@ -27,20 +29,24 @@ namespace UserControlSystem
             }
             _commandIsPending = true;
             OnCommandAccepted?.Invoke(commandExecutor);
-
-            _unitProducer.ProcessCommandExecutor(commandExecutor, command => ExecuteCommandWrapper(commandExecutor, command));
-            _attacker.ProcessCommandExecutor(commandExecutor, command => ExecuteCommandWrapper(commandExecutor, command));
-            _stopper.ProcessCommandExecutor(commandExecutor, command => ExecuteCommandWrapper(commandExecutor, command));
-            _mover.ProcessCommandExecutor(commandExecutor, command => ExecuteCommandWrapper(commandExecutor, command));
-            _patroller.ProcessCommandExecutor(commandExecutor, command => ExecuteCommandWrapper(commandExecutor, command));
+            
+            _unitProducer.ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(command, commandsQueue));
+            _attacker.ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(command, commandsQueue));
+            _stopper.ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(command, commandsQueue));
+            _mover.ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(command, commandsQueue));
+            _patroller.ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(command, commandsQueue));
         }
-
-        public void ExecuteCommandWrapper(ICommandExecutor commandExecutor, object command)
+        public void executeCommandWrapper(object command, ICommandsQueue commandsQueue)
         {
-            commandExecutor.ExecuteCommand(command);
+            if (!Input.GetKey(KeyCode.LeftShift))
+            {
+                commandsQueue.Clear();
+            }
+            commandsQueue.EnqueueCommand(command);
             _commandIsPending = false;
             OnCommandSent?.Invoke();
         }
+
 
         public void OnSelectionChanged()
         {
