@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Abstractions;
 using Abstractions.Commands;
 using Abstractions.Commands.CommandsInterfaces;
-using Assets.Scripts.Core;
 using UniRx;
 using UnityEngine;
+using UserControlSystem.UI.View;
 using Zenject;
 using Random = UnityEngine.Random;
 
@@ -16,6 +17,7 @@ namespace Core.CommandExecutors
 
         [SerializeField] private Transform _unitsParent;
         [SerializeField] private int _maximumUnitsInQueue = 6;
+        public List<GameObject> CountUnit { get; set; }
         [Inject] private DiContainer _diContainer;
 
         private ReactiveCollection<IUnitProductionTask> _queue = new ReactiveCollection<IUnitProductionTask>();
@@ -52,8 +54,8 @@ namespace Core.CommandExecutors
             var instance = _diContainer.InstantiatePrefab(command.UnitPrefab, transform.position, Quaternion.identity, _unitsParent);
             var queue = instance.GetComponent<ICommandsQueue>();
             var mainBuilding = GetComponent<MainBuilding>();
-            var factionMember = instance.GetComponent<FactionMember>();
-            factionMember.SetFaction(GetComponent<FactionMember>().FactionId);
+            var factionMember = instance.GetComponent<FactionView>();
+            factionMember.SetFaction(GetComponent<FactionView>().FactionId);
             queue.EnqueueCommand(new MoveCommand(mainBuilding.RallyPoint));
         }
     }

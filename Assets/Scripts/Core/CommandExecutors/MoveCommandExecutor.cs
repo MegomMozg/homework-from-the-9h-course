@@ -18,6 +18,8 @@ namespace Core.CommandExecutors
 
         public override async Task ExecuteSpecificCommand(IMoveCommand command)
         {
+            _stopCommandExecutor.CancellationTokenSource?.Cancel();
+            await Task.Yield();
             GetComponent<NavMeshAgent>().destination = command.Target;
             _animator.SetTrigger(Walk);
             _stopCommandExecutor.CancellationTokenSource = new CancellationTokenSource();

@@ -5,7 +5,7 @@ using Abstractions.Commands.CommandsInterfaces;
 using UnityEngine;
 using Zenject;
 
-namespace UserControlSystem
+namespace UserControlSystem.UI.Model
 {
     public sealed class CommandButtonsModel
     {
@@ -18,7 +18,6 @@ namespace UserControlSystem
         [Inject] private CommandCreatorBase<IStopCommand> _stopper;
         [Inject] private CommandCreatorBase<IMoveCommand> _mover;
         [Inject] private CommandCreatorBase<IPatrolCommand> _patroller;
-        [Inject] private CommandCreatorBase<ISetRallyPointCommand> _setRally;
 
         private bool _commandIsPending;
 
@@ -36,7 +35,6 @@ namespace UserControlSystem
             _stopper.ProcessCommandExecutor(commandExecutor, command => ExecuteCommandWrapper(command, commandsQueue));
             _mover.ProcessCommandExecutor(commandExecutor, command => ExecuteCommandWrapper(command, commandsQueue));
             _patroller.ProcessCommandExecutor(commandExecutor, command => ExecuteCommandWrapper(command, commandsQueue));
-            _setRally.ProcessCommandExecutor(commandExecutor, command => ExecuteCommandWrapper(command, commandsQueue));
         }
 
         public void ExecuteCommandWrapper(object command, ICommandsQueue commandsQueue)
@@ -63,7 +61,6 @@ namespace UserControlSystem
             _stopper.ProcessCancel();
             _mover.ProcessCancel();
             _patroller.ProcessCancel();
-            _setRally.ProcessCancel();
 
             OnCommandCancel?.Invoke();
         }

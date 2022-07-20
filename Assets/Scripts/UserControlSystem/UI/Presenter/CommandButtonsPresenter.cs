@@ -6,6 +6,7 @@ using Abstractions.Commands.CommandsInterfaces;
 using UniRx;
 using UnityEngine;
 using UserControlSystem.CommandsRealization;
+using UserControlSystem.UI.Model;
 using UserControlSystem.UI.View;
 using Utils;
 using Zenject;
